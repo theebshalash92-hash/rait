@@ -1,4 +1,5 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxpa_m8sUPftxr0AoH29x7vuQMsWEbs0Lw5GhwwkEko58V9ejCorx0aZVfqjuDSa2c/exec
+";
 
 let customerData = {
   customerId: '',
