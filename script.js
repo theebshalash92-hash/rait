@@ -1,5 +1,5 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxpa_m8sUPftxr0AoH29x7vuQMsWEbs0Lw5GhwwkEko58V9ejCorx0aZVfqjuDSa2c/exec
-";
+// استبدل هذا الرابط برابط الـ Deployment الجديد الخاص بك
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxKnKVxp1VjPV4HnqPTVrd9zDC7Y5nrt0P2YQvx34CaDPF5embxzd5OE97fEon2LfKM/exec";
 
 let customerData = {
   customerId: '',
@@ -37,7 +37,7 @@ backBtn.addEventListener('click', () => {
   step1.classList.add('active');
 });
 
-// حل مشكلة اختيار الإيموجي وتأكيد النقر
+// اختيار الإيموجي وتأكيد النقر
 emojiOptions.forEach(option => {
   option.addEventListener('click', function() {
     emojiOptions.forEach(opt => opt.classList.remove('selected'));
@@ -48,10 +48,10 @@ emojiOptions.forEach(option => {
   });
 });
 
-// إرسال البيانات
+// إرسال البيانات إلى Google Sheets
 submitBtn.addEventListener('click', async () => {
   if (customerData.rating === 0) {
-    alert('يرجى اختيار مستوى التقييم (اضغط على أحد الإيموجيات) قبل الإرسال.');
+    alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
     return;
   }
 
@@ -60,6 +60,13 @@ submitBtn.addEventListener('click', async () => {
   submitBtn.disabled = true;
   submitBtn.textContent = 'جاري الإرسال...';
 
+  const payload = {
+    customerId: customerData.customerId,
+    customerName: customerData.customerName,
+    rating: customerData.ratingText,
+    feedback: customerData.feedback
+  };
+
   try {
     await fetch(WEB_APP_URL, {
       method: 'POST',
@@ -67,12 +74,7 @@ submitBtn.addEventListener('click', async () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        customerId: customerData.customerId,
-        customerName: customerData.customerName,
-        rating: customerData.ratingText, // سيتم إرسال النص (راضي جداً/راضي/سيئ) إلى الشيت
-        feedback: customerData.feedback
-      })
+      body: JSON.stringify(payload)
     });
 
     step2.classList.remove('active');
