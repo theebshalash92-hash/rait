@@ -1,4 +1,3 @@
-// ضع رابط Apps Script الخاص بك هنا
 const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
 let customerData = {
@@ -14,7 +13,7 @@ const step2 = document.getElementById('step-2');
 const stepSuccess = document.getElementById('step-success');
 const customerForm = document.getElementById('customer-form');
 const welcomeMsg = document.getElementById('welcome-msg');
-const stars = document.querySelectorAll('.star');
+const emojiOptions = document.querySelectorAll('.emoji-option');
 const submitBtn = document.getElementById('submit-btn');
 const backBtn = document.getElementById('back-btn');
 
@@ -36,29 +35,19 @@ backBtn.addEventListener('click', () => {
   step1.classList.add('active');
 });
 
-// اختيار النجوم
-stars.forEach(star => {
-  star.addEventListener('click', () => {
-    customerData.rating = parseInt(star.getAttribute('data-value'));
-    updateStars(customerData.rating);
+// اختيار الإيموجي
+emojiOptions.forEach(option => {
+  option.addEventListener('click', () => {
+    emojiOptions.forEach(opt => opt.classList.remove('selected'));
+    option.classList.add('selected');
+    customerData.rating = parseInt(option.getAttribute('data-value'));
   });
 });
 
-function updateStars(rating) {
-  stars.forEach(star => {
-    const val = parseInt(star.getAttribute('data-value'));
-    if (val <= rating) {
-      star.classList.add('selected');
-    } else {
-      star.classList.remove('selected');
-    }
-  });
-}
-
-// إرسال البيانات إلى Google Sheets
+// إرسال البيانات
 submitBtn.addEventListener('click', async () => {
   if (customerData.rating === 0) {
-    alert('يرجى اختيار التقييم (من 1 إلى 5 نجوم) قبل الإرسال.');
+    alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
     return;
   }
 
@@ -68,17 +57,15 @@ submitBtn.addEventListener('click', async () => {
   submitBtn.textContent = 'جاري الإرسال...';
 
   try {
-    // إرسال البيانات باستخدام fetch
     await fetch(WEB_APP_URL, {
       method: 'POST',
-      mode: 'no-cors', // يتطلبه Apps Script لتفادي مشاكل CORS
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(customerData)
     });
 
-    // إظهار شاشة النجاح
     step2.classList.remove('active');
     stepSuccess.classList.add('active');
 
