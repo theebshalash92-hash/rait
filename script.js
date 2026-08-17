@@ -4,6 +4,7 @@ let customerData = {
   customerId: '',
   customerName: '',
   rating: 0,
+  ratingText: '',
   feedback: ''
 };
 
@@ -35,19 +36,21 @@ backBtn.addEventListener('click', () => {
   step1.classList.add('active');
 });
 
-// اختيار الإيموجي
+// حل مشكلة اختيار الإيموجي وتأكيد النقر
 emojiOptions.forEach(option => {
-  option.addEventListener('click', () => {
+  option.addEventListener('click', function() {
     emojiOptions.forEach(opt => opt.classList.remove('selected'));
-    option.classList.add('selected');
-    customerData.rating = parseInt(option.getAttribute('data-value'));
+    this.classList.add('selected');
+    
+    customerData.rating = parseInt(this.getAttribute('data-value'));
+    customerData.ratingText = this.getAttribute('data-text');
   });
 });
 
 // إرسال البيانات
 submitBtn.addEventListener('click', async () => {
   if (customerData.rating === 0) {
-    alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
+    alert('يرجى اختيار مستوى التقييم (اضغط على أحد الإيموجيات) قبل الإرسال.');
     return;
   }
 
@@ -63,7 +66,12 @@ submitBtn.addEventListener('click', async () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(customerData)
+      body: JSON.stringify({
+        customerId: customerData.customerId,
+        customerName: customerData.customerName,
+        rating: customerData.ratingText, // سيتم إرسال النص (راضي جداً/راضي/سيئ) إلى الشيت
+        feedback: customerData.feedback
+      })
     });
 
     step2.classList.remove('active');
