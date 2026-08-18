@@ -1,4 +1,3 @@
-// رابط Google Apps Script الخاص بك
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxKnKVxp1VjPV4HnqPTVrd9zDC7Y5nrt0P2YQvx34CaDPF5embxzd5OE97fEon2LfKM/exec";
 
 let customerData = {
@@ -19,9 +18,25 @@ const emojiOptions = document.querySelectorAll('.emoji-option');
 const submitBtn = document.getElementById('submit-btn');
 const backBtn = document.getElementById('back-btn');
 
-// الانتقال للشاشة الثانية
+// دالة تفعيل الشاشة الكاملة على التابلت
+function requestFullScreen() {
+  const elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen().catch(() => {});
+  } else if (elem.webkitRequestFullscreen) { /* iPad / Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+}
+
+// الانتقال للشاشة الثانية وتفعيل الشاشة الكاملة
 customerForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  
+  // تفعيل ملء الشاشة فور النقر
+  requestFullScreen();
+
   customerData.customerId = document.getElementById('customerId').value.trim();
   customerData.customerName = document.getElementById('customerName').value.trim();
 
@@ -48,7 +63,7 @@ emojiOptions.forEach(option => {
   });
 });
 
-// إرسال البيانات إلى Google Sheets
+// إرسال البيانات
 submitBtn.addEventListener('click', async () => {
   if (customerData.rating === 0) {
     alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
