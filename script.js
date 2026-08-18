@@ -18,24 +18,31 @@ const emojiOptions = document.querySelectorAll('.emoji-option');
 const submitBtn = document.getElementById('submit-btn');
 const backBtn = document.getElementById('back-btn');
 
-// دالة تفعيل الشاشة الكاملة على التابلت
-function requestFullScreen() {
-  const elem = document.documentElement;
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen().catch(() => {});
-  } else if (elem.webkitRequestFullscreen) { /* iPad / Safari */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
+// --- دالة الشاشة الكاملة برمجياً ---
+function enableFullScreen() {
+  const docElm = document.documentElement;
+  
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    if (docElm.requestFullscreen) {
+      docElm.requestFullscreen().catch(err => console.log(err));
+    } else if (docElm.webkitRequestFullscreen) { /* iPad / Safari */
+      docElm.webkitRequestFullscreen();
+    } else if (docElm.msRequestFullscreen) { /* IE/Edge */
+      docElm.msRequestFullscreen();
+    }
   }
 }
 
-// الانتقال للشاشة الثانية وتفعيل الشاشة الكاملة
+// 1. تفعيل الشاشة الكاملة برمجياً عند أول لمسة/نقرة في الصفحة بعد التشغيل
+window.addEventListener('click', enableFullScreen, { once: true });
+window.addEventListener('touchstart', enableFullScreen, { once: true });
+
+// 2. الانتقال للشاشة الثانية وتأكيد تفعيل الشاشة الكاملة
 customerForm.addEventListener('submit', (e) => {
   e.preventDefault();
   
-  // تفعيل ملء الشاشة فور النقر
-  requestFullScreen();
+  // تأكيد تفعيل الشاشة الكاملة عند فتح النموذج
+  enableFullScreen();
 
   customerData.customerId = document.getElementById('customerId').value.trim();
   customerData.customerName = document.getElementById('customerName').value.trim();
@@ -63,7 +70,7 @@ emojiOptions.forEach(option => {
   });
 });
 
-// إرسال البيانات
+// إرسال البيانات إلى Google Sheets
 submitBtn.addEventListener('click', async () => {
   if (customerData.rating === 0) {
     alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
