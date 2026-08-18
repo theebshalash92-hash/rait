@@ -1,5 +1,4 @@
-// استبدل هذا الرابط برابط الـ Deployment الجديد الخاص بك
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxKnKVxp1VjPV4HnqPTVrd9zDC7Y5nrt0P2YQvx34CaDPF5embxzd5OE97fEon2LfKM/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_NEW_DEPLOYMENT_ID/exec";
 
 let customerData = {
   customerId: '',
@@ -37,7 +36,7 @@ backBtn.addEventListener('click', () => {
   step1.classList.add('active');
 });
 
-// اختيار الإيموجي وتأكيد النقر
+// اختيار الإيموجي
 emojiOptions.forEach(option => {
   option.addEventListener('click', function() {
     emojiOptions.forEach(opt => opt.classList.remove('selected'));
@@ -48,7 +47,7 @@ emojiOptions.forEach(option => {
   });
 });
 
-// إرسال البيانات إلى Google Sheets
+// إرسال البيانات
 submitBtn.addEventListener('click', async () => {
   if (customerData.rating === 0) {
     alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
@@ -72,7 +71,7 @@ submitBtn.addEventListener('click', async () => {
       method: 'POST',
       mode: 'no-cors',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       body: JSON.stringify(payload)
     });
@@ -81,6 +80,7 @@ submitBtn.addEventListener('click', async () => {
     stepSuccess.classList.add('active');
 
   } catch (error) {
+    console.error('Error:', error);
     alert('حدث خطأ أثناء إرسال البيانات، يرجى المحاولة لاحقاً.');
     submitBtn.disabled = false;
     submitBtn.textContent = 'إرسال التقييم';
