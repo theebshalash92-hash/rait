@@ -1,207 +1,88 @@
-* {
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-}
+const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_NEW_DEPLOYMENT_ID/exec";
 
-body {
-  background-color: #121212;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-}
+let customerData = {
+  customerId: '',
+  customerName: '',
+  rating: 0,
+  ratingText: '',
+  feedback: ''
+};
 
-.card {
-  background: #1e1e1e;
-  border: 1px solid #333333;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  width: 100%;
-  max-width: 420px;
-  text-align: center;
-}
+// عناصر الواجهة
+const step1 = document.getElementById('step-1');
+const step2 = document.getElementById('step-2');
+const stepSuccess = document.getElementById('step-success');
+const customerForm = document.getElementById('customer-form');
+const welcomeMsg = document.getElementById('welcome-msg');
+const emojiOptions = document.querySelectorAll('.emoji-option');
+const submitBtn = document.getElementById('submit-btn');
+const backBtn = document.getElementById('back-btn');
 
-/* تنسيق اللوغو لحمايته من الاقتطاع */
-.logo-container {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 20px auto;
-  border-radius: 50%;
-  background-color: #ffcc00;
-  border: 3px solid #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
+// الانتقال للشاشة الثانية
+customerForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  customerData.customerId = document.getElementById('customerId').value.trim();
+  customerData.customerName = document.getElementById('customerName').value.trim();
 
-#brand-logo {
-  max-width: 85%;
-  max-height: 85%;
-  object-fit: contain;
-  display: block;
-}
+  welcomeMsg.textContent = `أهلاً بك يا ${customerData.customerName}، يسعدنا تقييمك للخدمة:`;
+  
+  step1.classList.remove('active');
+  step2.classList.add('active');
+});
 
-.logo-placeholder {
-  color: #000000;
-  font-weight: bold;
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+// الرجوع للشاشة الأولى
+backBtn.addEventListener('click', () => {
+  step2.classList.remove('active');
+  step1.classList.add('active');
+});
 
-.step {
-  display: none;
-}
+// اختيار الإيموجي
+emojiOptions.forEach(option => {
+  option.addEventListener('click', function() {
+    emojiOptions.forEach(opt => opt.classList.remove('selected'));
+    this.classList.add('selected');
+    
+    customerData.rating = parseInt(this.getAttribute('data-value'));
+    customerData.ratingText = this.getAttribute('data-text');
+  });
+});
 
-.step.active {
-  display: block;
-}
+// إرسال البيانات
+submitBtn.addEventListener('click', async () => {
+  if (customerData.rating === 0) {
+    alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
+    return;
+  }
 
-h2 {
-  color: #ffcc00;
-  margin-bottom: 8px;
-}
+  customerData.feedback = document.getElementById('feedback').value.trim();
 
-p {
-  color: #cccccc;
-  margin-bottom: 20px;
-  font-size: 14px;
-}
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'جاري الإرسال...';
 
-.form-group {
-  text-align: right;
-  margin-bottom: 18px;
-}
+  const payload = {
+    customerId: customerData.customerId,
+    customerName: customerData.customerName,
+    rating: customerData.ratingText,
+    feedback: customerData.feedback
+  };
 
-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #ffcc00;
-}
+  try {
+    await fetch(WEB_APP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(payload)
+    });
 
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  background-color: #2a2a2a;
-  border: 1px solid #444444;
-  color: #ffffff;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
+    step2.classList.remove('active');
+    stepSuccess.classList.add('active');
 
-input:focus, textarea:focus {
-  border-color: #ffcc00;
-}
-
-/* خيارات التقييم بالإيموجي */
-.rating-emojis {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 25px;
-  gap: 10px;
-}
-
-.emoji-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  padding: 12px;
-  border: 2px solid #333333;
-  background-color: #2a2a2a;
-  border-radius: 12px;
-  transition: all 0.2s ease-in-out;
-  flex: 1;
-  user-select: none;
-}
-
-.emoji-icon {
-  font-size: 38px;
-  margin-bottom: 6px;
-  pointer-events: none;
-  filter: grayscale(100%);
-  transition: transform 0.2s, filter 0.2s;
-}
-
-.emoji-label {
-  font-size: 13px;
-  font-weight: bold;
-  color: #aaaaaa;
-  pointer-events: none;
-}
-
-.emoji-option:hover {
-  border-color: #ffcc00;
-}
-
-.emoji-option:hover .emoji-icon {
-  filter: grayscale(0%);
-  transform: scale(1.1);
-}
-
-.emoji-option.selected {
-  border-color: #ffcc00;
-  background-color: #332b00;
-  box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
-}
-
-.emoji-option.selected .emoji-icon {
-  filter: grayscale(0%);
-  transform: scale(1.2);
-}
-
-.emoji-option.selected .emoji-label {
-  color: #ffcc00;
-}
-
-/* الأزرار */
-.btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #ffcc00;
-  color: #000000;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
-}
-
-.btn:hover {
-  background-color: #e6b800;
-}
-
-.btn:active {
-  transform: scale(0.98);
-}
-
-.btn-secondary {
-  background-color: #444444;
-  color: #ffffff;
-}
-
-.btn-secondary:hover {
-  background-color: #555555;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-}
-
-.success-icon {
-  font-size: 50px;
-  color: #ffcc00;
-  margin-bottom: 10px;
-}
+  } catch (error) {
+    console.error('Error:', error);
+    alert('حدث خطأ أثناء إرسال البيانات، يرجى المحاولة لاحقاً.');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'إرسال التقييم';
+  }
+});
