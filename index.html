@@ -4,12 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تقييم تجربة العميل</title>
+  
+  <!-- إعدادات الشاشة الكاملة وإخفاء شريط المتصفح على التابلت (Kiosk / PWA) -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="card">
-    <!-- شعار الشركة / اللوغو -->
+    <!-- شعار المتجر -->
     <div class="logo-container">
       <img src="https://drive.usercontent.google.com/download?id=1vtd5gUi3b-Veh9fh6c3x1e_KmK89gJiN" alt="شعار المتجر" id="brand-logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex';">
       <div id="logo-placeholder" class="logo-placeholder" style="display: none;">JJS</div>
@@ -23,7 +29,7 @@
       <form id="customer-form">
         <div class="form-group">
           <label for="customerId">رقم العميل / الهاتف:</label>
-          <input type="text" id="customerId" placeholder="أدخل رقم العميل" required>
+          <input type="text" id="customerId" placeholder="أدخل رقم الهاتف" required>
         </div>
 
         <div class="form-group">
