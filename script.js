@@ -1,5 +1,5 @@
-// ضع رابط الـ Deployment الخاص بك من Google Apps Script هنا
-const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_NEW_DEPLOYMENT_ID/exec";
+// رابط Google Apps Script الخاص بك
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxKnKVxp1VjPV4HnqPTVrd9zDC7Y5nrt0P2YQvx34CaDPF5embxzd5OE97fEon2LfKM/exec";
 
 let customerData = {
   customerId: '',
@@ -48,7 +48,7 @@ emojiOptions.forEach(option => {
   });
 });
 
-// إرسال البيانات
+// إرسال البيانات إلى Google Sheets
 submitBtn.addEventListener('click', async () => {
   if (customerData.rating === 0) {
     alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
