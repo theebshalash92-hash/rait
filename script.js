@@ -1,3 +1,4 @@
+// ضع رابط الـ Deployment الخاص بك من Google Apps Script هنا
 const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_NEW_DEPLOYMENT_ID/exec";
 
 let customerData = {
