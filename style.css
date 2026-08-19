@@ -19,7 +19,7 @@ body {
   padding: 15px;
 }
 
-/* البطاقة الرئيسية (حجم متناسق ومستجيب) */
+/* البطاقة الرئيسية */
 .card {
   background: #1a1a1a;
   border: 2px solid #f1c40f;
@@ -27,7 +27,7 @@ body {
   border-radius: 20px;
   box-shadow: 0 12px 40px rgba(241, 196, 15, 0.15), 0 8px 24px rgba(0, 0, 0, 0.8);
   width: 100%;
-  max-width: 420px; /* حجم متوازن لا يكبر أكثر من اللازم */
+  max-width: 440px;
   text-align: center;
   transition: all 0.2s ease;
 }
@@ -41,9 +41,9 @@ body {
 }
 
 #brand-logo {
-  width: 130px;
+  width: 120px;
   height: auto;
-  max-height: 120px;
+  max-height: 100px;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
 }
@@ -100,7 +100,6 @@ input:focus, textarea:focus {
   background-color: #2d2d2d;
 }
 
-/* خيارات الإيموجي */
 .rating-emojis {
   display: flex;
   justify-content: space-between;
@@ -156,7 +155,6 @@ input:focus, textarea:focus {
   color: #f1c40f;
 }
 
-/* الأزرار */
 .btn {
   width: 100%;
   padding: 12px;
@@ -198,22 +196,102 @@ input:focus, textarea:focus {
   margin-bottom: 10px;
 }
 
-/* --- ضبط المقاسات خصيصاً للشاشات المتوسطة والتابلت (Portrait & Landscape) --- */
-@media screen and (max-height: 750px) {
+/* ========================================================= */
+/*   تنسيق خاص ومثالي للوضع العرضي على التابلت (Landscape Mode)   */
+/* ========================================================= */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+  body {
+    padding: 10px;
+  }
+
   .card {
-    padding: 18px 16px;
-    max-width: 380px;
+    max-width: 680px; /* توسيع البطاقة أفقياً */
+    padding: 15px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
+
+  .brand-header {
+    margin-bottom: 8px;
+  }
+
   #brand-logo {
-    width: 100px;
-    max-height: 90px;
+    width: 85px;
+    max-height: 55px;
   }
-  h2 { font-size: 19px; margin-bottom: 4px; }
-  p { font-size: 13px; margin-bottom: 12px; }
-  .form-group { margin-bottom: 12px; }
-  label { font-size: 13px; margin-bottom: 4px; }
-  input, textarea { padding: 10px; font-size: 14px; }
-  .emoji-icon { font-size: 30px; }
-  .emoji-label { font-size: 12px; }
-  .btn { padding: 10px; font-size: 15px; }
+
+  h2 {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+
+  p {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  /* ترتيب الحقول أفقياً في الشاشة الأولى لجعل الاستخدام مريحاً */
+  #step-1 #customer-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    text-align: right;
+  }
+
+  #step-1 #customer-form .btn {
+    grid-column: span 2;
+    margin-top: 5px;
+    padding: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 8px;
+  }
+
+  label {
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+
+  input, textarea {
+    padding: 8px 10px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  textarea {
+    rows: 2;
+    height: 45px;
+  }
+
+  .rating-emojis {
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+
+  .emoji-option {
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .emoji-icon {
+    font-size: 26px;
+    margin-bottom: 2px;
+  }
+
+  .emoji-label {
+    font-size: 11px;
+  }
+
+  .btn {
+    padding: 9px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .success-icon {
+    font-size: 38px;
+    margin-bottom: 5px;
+  }
 }
