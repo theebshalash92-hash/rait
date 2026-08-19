@@ -18,12 +18,13 @@
 </head>
 <body>
 
-  <div class="card">
-    <div class="logo-container">
-      <img src="logo.png" alt="JJ's Supermarket Logo" id="brand-logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex';">
-      <div id="logo-placeholder" class="logo-placeholder" style="display: none;">JJ's</div>
-    </div>
+  <!-- اللوغو أعلى الشاشة خارج البطاقة -->
+  <div class="header-logo-container">
+    <img src="logo.png" alt="JJ's Supermarket Logo" id="top-logo" onerror="this.style.display='none'; document.getElementById('logo-text-fallback').style.display='block';">
+    <div id="logo-text-fallback" class="logo-text-fallback" style="display: none;">JJ's SUPERMARKET</div>
+  </div>
 
+  <div class="card">
     <!-- الشاشة الأولى: بيانات العميل -->
     <div id="step-1" class="step active">
       <h2>مرحباً بك!</h2>
