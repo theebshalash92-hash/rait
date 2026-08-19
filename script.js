@@ -10,7 +10,6 @@ let customerData = {
 
 let autoResetTimer = null;
 
-// عناصر الواجهة
 const step1 = document.getElementById('step-1');
 const step2 = document.getElementById('step-2');
 const stepSuccess = document.getElementById('step-success');
@@ -20,7 +19,7 @@ const emojiOptions = document.querySelectorAll('.emoji-option');
 const submitBtn = document.getElementById('submit-btn');
 const backBtn = document.getElementById('back-btn');
 
-// --- 1. منع خمول الشاشة برمجياً ---
+// --- 1. منع خمول الشاشة ---
 let wakeLock = null;
 
 async function requestWakeLock() {
