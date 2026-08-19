@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>تقييم تجربة العميل</title>
   
-  <!-- ربط ملف الـ Web App Manifest لفتح الموقع كتطبيق -->
+  <!-- ربط ملف الـ Web App Manifest لفتح الموقع كتطبيق PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#121212">
 
@@ -35,12 +35,28 @@
       <form id="customer-form">
         <div class="form-group">
           <label for="customerId">رقم العميل / الهاتف:</label>
-          <input type="text" id="customerId" placeholder="أدخل رقم الهاتف" required>
+          <!-- كيبورد أرقام كبير مخصص للتابلت بدون اقتراحات تعطل العميل -->
+          <input 
+            type="tel" 
+            id="customerId" 
+            placeholder="أدخل رقم الهاتف" 
+            inputmode="numeric" 
+            pattern="[0-9]*" 
+            autocomplete="off" 
+            required>
         </div>
 
         <div class="form-group">
           <label for="customerName">اسم العميل:</label>
-          <input type="text" id="customerName" placeholder="أدخل اسمك الكريم" required>
+          <!-- كيبورد نصي بدون تصحيح إملائي أوتوماتيكي -->
+          <input 
+            type="text" 
+            id="customerName" 
+            placeholder="أدخل اسمك الكريم" 
+            autocomplete="off" 
+            autocorrect="off" 
+            spellcheck="false" 
+            required>
         </div>
 
         <button type="submit" class="btn">التالي</button>
