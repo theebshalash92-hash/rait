@@ -6,25 +6,24 @@
   <title>تقييم تجربة العميل - JJ's Supermarket</title>
   
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#121212">
+  <meta name="theme-color" content="#1a1a1a">
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="JJ's Supermarket">
-  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="apple-touch-icon" href="https://drive.usercontent.google.com/download?id=1vtd5gUi3b-Veh9fh6c3x1e_KmK89gJiN">
   
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- اللوغو أعلى الشاشة خارج البطاقة -->
-  <div class="header-logo-container">
-    <img src="logo.png" alt="JJ's Supermarket Logo" id="top-logo" onerror="this.style.display='none'; document.getElementById('logo-text-fallback').style.display='block';">
-    <div id="logo-text-fallback" class="logo-text-fallback" style="display: none;">JJ's SUPERMARKET</div>
-  </div>
-
   <div class="card">
+    <!-- الشعار الرسمي في أعلى البطاقة -->
+    <div class="brand-header">
+      <img src="https://drive.usercontent.google.com/download?id=1vtd5gUi3b-Veh9fh6c3x1e_KmK89gJiN" alt="JJ's Supermarket Logo" id="brand-logo" onerror="this.onerror=null; this.src='logo.png';">
+    </div>
+
     <!-- الشاشة الأولى: بيانات العميل -->
     <div id="step-1" class="step active">
       <h2>مرحباً بك!</h2>
@@ -55,7 +54,7 @@
             required>
         </div>
 
-        <button type="submit" class="btn">التالي</button>
+        <button type="submit" class="btn btn-primary">التالي</button>
       </form>
     </div>
 
@@ -86,7 +85,7 @@
 
       <div class="actions">
         <button type="button" id="back-btn" class="btn btn-secondary">السابق</button>
-        <button type="button" id="submit-btn" class="btn">إرسال التقييم</button>
+        <button type="button" id="submit-btn" class="btn btn-primary">إرسال التقييم</button>
       </div>
     </div>
 
@@ -95,7 +94,7 @@
       <div class="success-icon">✓</div>
       <h2>شكراً لك!</h2>
       <p>تم استلام تقييمك بنجاح ونقدر وقتك لمساعدتنا في تحسين خدماتنا.</p>
-      <button type="button" onclick="resetApp()" class="btn">تقييم جديد</button>
+      <button type="button" onclick="resetApp()" class="btn btn-primary">تقييم جديد</button>
     </div>
   </div>
 
