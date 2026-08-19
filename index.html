@@ -24,14 +24,14 @@
       <img src="https://drive.usercontent.google.com/download?id=1vtd5gUi3b-Veh9fh6c3x1e_KmK89gJiN" alt="JJ's Supermarket Logo" id="brand-logo" onerror="this.onerror=null; this.src='logo.png';">
     </div>
 
-    <!-- الشاشة الأولى: بيانات العميل -->
+    <!-- الشاشة الأولى: بيانات العميل والفاتورة -->
     <div id="step-1" class="step active">
       <h2>مرحباً بك!</h2>
-      <p>يرجى إدخال بياناتك لمتابعة التقييم</p>
+      <p>أدخل بيانات الفاتورة لتسجيل نقاط الولاء ومتابعة التقييم</p>
       
       <form id="customer-form">
         <div class="form-group">
-          <label for="customerId">رقم العميل / الهاتف:</label>
+          <label for="customerId">رقم الهاتف:</label>
           <input 
             type="tel" 
             id="customerId" 
@@ -51,6 +51,29 @@
             autocomplete="off" 
             autocorrect="off" 
             spellcheck="false" 
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="invoiceNo">رقم الفاتورة:</label>
+          <input 
+            type="text" 
+            id="invoiceNo" 
+            placeholder="رقم الفاتورة" 
+            inputmode="numeric" 
+            autocomplete="off" 
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="invoiceAmount">قيمة الفاتورة (بالدينار):</label>
+          <input 
+            type="number" 
+            id="invoiceAmount" 
+            placeholder="مثال: 15.50" 
+            step="0.01" 
+            min="0.1" 
+            inputmode="decimal" 
             required>
         </div>
 
@@ -89,11 +112,21 @@
       </div>
     </div>
 
-    <!-- شاشة النجاح -->
+    <!-- شاشة النجاح وعرض النقاط المكتسبة -->
     <div id="step-success" class="step">
       <div class="success-icon">✓</div>
       <h2>شكراً لك!</h2>
-      <p>تم استلام تقييمك بنجاح ونقدر وقتك لمساعدتنا في تحسين خدماتنا.</p>
+      <p>تم استلام تقييمك وتسجيل نقاط الفاتورة بنجاح.</p>
+
+      <!-- شارة احتساب النقاط المباشرة -->
+      <div class="loyalty-badge">
+        <span class="badge-icon">🎉</span>
+        <div class="badge-text">
+          <strong id="earned-points-display">+0 نقطة ولاء</strong>
+          <small id="invoice-summary-display">عن فاتورة بقيمة 0 دينار</small>
+        </div>
+      </div>
+
       <button type="button" onclick="resetApp()" class="btn btn-primary">تقييم جديد</button>
     </div>
   </div>
