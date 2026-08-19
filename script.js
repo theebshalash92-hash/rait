@@ -20,7 +20,7 @@ const emojiOptions = document.querySelectorAll('.emoji-option');
 const submitBtn = document.getElementById('submit-btn');
 const backBtn = document.getElementById('back-btn');
 
-// --- 1. منع إغلاق الشاشة برمجياً (Screen Wake Lock) ---
+// --- 1. منع خمول الشاشة برمجياً ---
 let wakeLock = null;
 
 async function requestWakeLock() {
@@ -39,7 +39,6 @@ document.addEventListener('visibilitychange', async () => {
   }
 });
 
-// تفعيل وضع الكشك والشاشة الكاملة
 function initAppMode() {
   requestWakeLock();
   
@@ -56,7 +55,7 @@ function initAppMode() {
 window.addEventListener('click', initAppMode, { once: true });
 window.addEventListener('touchstart', initAppMode, { once: true });
 
-// --- 2. إدارة الخطوات والتنقل ---
+// --- 2. التحكم بالواجهة ---
 customerForm.addEventListener('submit', (e) => {
   e.preventDefault();
   initAppMode();
@@ -85,7 +84,7 @@ emojiOptions.forEach(option => {
   });
 });
 
-// --- 3. الإرسال الفوري والسريع جداً ---
+// --- 3. الإرسال السريع وتصفير الشاشة ---
 submitBtn.addEventListener('click', () => {
   if (customerData.rating === 0) {
     alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
@@ -101,7 +100,6 @@ submitBtn.addEventListener('click', () => {
     feedback: customerData.feedback
   };
 
-  // أ) الإرسال في الخلفية فوري بدون انتظار رد السيرفر
   fetch(WEB_APP_URL, {
     method: 'POST',
     mode: 'no-cors',
@@ -111,18 +109,15 @@ submitBtn.addEventListener('click', () => {
     body: JSON.stringify(payload)
   }).catch(err => console.error('Background send error:', err));
 
-  // ب) الانتقال الفوري لشاشة النجاح
   step2.classList.remove('active');
   stepSuccess.classList.add('active');
 
-  // ج) إعادة تعيين التطبيق آلياً بعد 4 ثوانٍ
   if (autoResetTimer) clearTimeout(autoResetTimer);
   autoResetTimer = setTimeout(() => {
     resetApp();
   }, 4000);
 });
 
-// دالة العودة للشاشة الأولى لتهيئة التابلت للعميل التالي
 function resetApp() {
   if (autoResetTimer) clearTimeout(autoResetTimer);
   
