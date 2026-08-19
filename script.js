@@ -18,31 +18,48 @@ const emojiOptions = document.querySelectorAll('.emoji-option');
 const submitBtn = document.getElementById('submit-btn');
 const backBtn = document.getElementById('back-btn');
 
-// --- دالة الشاشة الكاملة برمجياً ---
-function enableFullScreen() {
-  const docElm = document.documentElement;
+// --- 1. منع إغلاق شاشة التابلت تلقائياً (Screen Wake Lock) ---
+let wakeLock = null;
+
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+    }
+  } catch (err) {
+    console.log(`Wake Lock Error: ${err.message}`);
+  }
+}
+
+// إعادة القفل إذا تم التبديل ورجع العميل للتابلت
+document.addEventListener('visibilitychange', async () => {
+  if (wakeLock !== null && document.visibilityState === 'visible') {
+    await requestWakeLock();
+  }
+});
+
+// تفعيل وضع الكشك والتطبيق الكامل عند أول لمسة
+function initAppMode() {
+  requestWakeLock();
   
+  const docElm = document.documentElement;
   if (!document.fullscreenElement && !document.webkitFullscreenElement) {
     if (docElm.requestFullscreen) {
-      docElm.requestFullscreen().catch(err => console.log(err));
-    } else if (docElm.webkitRequestFullscreen) { /* iPad / Safari */
+      docElm.requestFullscreen().catch(() => {});
+    } else if (docElm.webkitRequestFullscreen) {
       docElm.webkitRequestFullscreen();
-    } else if (docElm.msRequestFullscreen) { /* IE/Edge */
-      docElm.msRequestFullscreen();
     }
   }
 }
 
-// 1. تفعيل الشاشة الكاملة برمجياً عند أول لمسة/نقرة في الصفحة بعد التشغيل
-window.addEventListener('click', enableFullScreen, { once: true });
-window.addEventListener('touchstart', enableFullScreen, { once: true });
+window.addEventListener('click', initAppMode, { once: true });
+window.addEventListener('touchstart', initAppMode, { once: true });
 
-// 2. الانتقال للشاشة الثانية وتأكيد تفعيل الشاشة الكاملة
+// --- 2. إدارة خطوات التقييم ---
 customerForm.addEventListener('submit', (e) => {
   e.preventDefault();
   
-  // تأكيد تفعيل الشاشة الكاملة عند فتح النموذج
-  enableFullScreen();
+  initAppMode();
 
   customerData.customerId = document.getElementById('customerId').value.trim();
   customerData.customerName = document.getElementById('customerName').value.trim();
@@ -53,13 +70,11 @@ customerForm.addEventListener('submit', (e) => {
   step2.classList.add('active');
 });
 
-// الرجوع للشاشة الأولى
 backBtn.addEventListener('click', () => {
   step2.classList.remove('active');
   step1.classList.add('active');
 });
 
-// اختيار الإيموجي
 emojiOptions.forEach(option => {
   option.addEventListener('click', function() {
     emojiOptions.forEach(opt => opt.classList.remove('selected'));
@@ -70,7 +85,6 @@ emojiOptions.forEach(option => {
   });
 });
 
-// إرسال البيانات إلى Google Sheets
 submitBtn.addEventListener('click', async () => {
   if (customerData.rating === 0) {
     alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
