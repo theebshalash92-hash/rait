@@ -3,6 +3,9 @@ const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxKnKVxp1VjPV4HnqPT
 let customerData = {
   customerId: '',
   customerName: '',
+  invoiceNo: '',
+  invoiceAmount: 0,
+  earnedPoints: 0,
   rating: 0,
   ratingText: '',
   feedback: ''
@@ -54,13 +57,20 @@ function initAppMode() {
 window.addEventListener('click', initAppMode, { once: true });
 window.addEventListener('touchstart', initAppMode, { once: true });
 
-// --- 2. التحكم بالواجهة ---
+// --- 2. التحكم بالنموذج واحتساب النقاط ---
 customerForm.addEventListener('submit', (e) => {
   e.preventDefault();
   initAppMode();
 
   customerData.customerId = document.getElementById('customerId').value.trim();
   customerData.customerName = document.getElementById('customerName').value.trim();
+  customerData.invoiceNo = document.getElementById('invoiceNo').value.trim();
+  
+  const amount = parseFloat(document.getElementById('invoiceAmount').value) || 0;
+  customerData.invoiceAmount = amount;
+  
+  // حساب النقاط: كل 1 دينار = 1 نقطة (يتم إهمال الفكة)
+  customerData.earnedPoints = Math.floor(amount);
 
   welcomeMsg.textContent = `أهلاً بك يا ${customerData.customerName}، يسعدنا تقييمك للخدمة:`;
   
@@ -83,7 +93,7 @@ emojiOptions.forEach(option => {
   });
 });
 
-// --- 3. الإرسال السريع وتصفير الشاشة ---
+// --- 3. إرسال البيانات وعرض رصيد النقاط ---
 submitBtn.addEventListener('click', () => {
   if (customerData.rating === 0) {
     alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
@@ -95,10 +105,14 @@ submitBtn.addEventListener('click', () => {
   const payload = {
     customerId: customerData.customerId,
     customerName: customerData.customerName,
+    invoiceNo: customerData.invoiceNo,
+    invoiceAmount: customerData.invoiceAmount,
+    earnedPoints: customerData.earnedPoints,
     rating: customerData.ratingText,
     feedback: customerData.feedback
   };
 
+  // إرسال البيانات المباشر إلى Google Sheets
   fetch(WEB_APP_URL, {
     method: 'POST',
     mode: 'no-cors',
@@ -108,19 +122,33 @@ submitBtn.addEventListener('click', () => {
     body: JSON.stringify(payload)
   }).catch(err => console.error('Background send error:', err));
 
+  // عرض تفاصيل النقاط المكتسبة في شاشة النجاح
+  document.getElementById('earned-points-display').textContent = `+${customerData.earnedPoints} نقطة ولاء`;
+  document.getElementById('invoice-summary-display').textContent = `فاتورة رقم (${customerData.invoiceNo}) بقيمة ${customerData.invoiceAmount} دينار`;
+
   step2.classList.remove('active');
   stepSuccess.classList.add('active');
 
   if (autoResetTimer) clearTimeout(autoResetTimer);
   autoResetTimer = setTimeout(() => {
     resetApp();
-  }, 4000);
+  }, 4500);
 });
 
 function resetApp() {
   if (autoResetTimer) clearTimeout(autoResetTimer);
   
-  customerData = { customerId: '', customerName: '', rating: 0, ratingText: '', feedback: '' };
+  customerData = { 
+    customerId: '', 
+    customerName: '', 
+    invoiceNo: '', 
+    invoiceAmount: 0, 
+    earnedPoints: 0, 
+    rating: 0, 
+    ratingText: '', 
+    feedback: '' 
+  };
+  
   customerForm.reset();
   document.getElementById('feedback').value = '';
   emojiOptions.forEach(opt => opt.classList.remove('selected'));
