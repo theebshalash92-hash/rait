@@ -35,7 +35,6 @@
       <form id="customer-form">
         <div class="form-group">
           <label for="customerId">رقم العميل / الهاتف:</label>
-          <!-- كيبورد أرقام كبير مخصص للتابلت بدون اقتراحات تعطل العميل -->
           <input 
             type="tel" 
             id="customerId" 
@@ -48,7 +47,6 @@
 
         <div class="form-group">
           <label for="customerName">اسم العميل:</label>
-          <!-- كيبورد نصي بدون تصحيح إملائي أوتوماتيكي -->
           <input 
             type="text" 
             id="customerName" 
@@ -99,7 +97,7 @@
       <div class="success-icon">✓</div>
       <h2>شكراً لك!</h2>
       <p>تم استلام تقييمك بنجاح ونقدر وقتك لمساعدتنا في تحسين خدماتنا.</p>
-      <button type="button" onclick="location.reload()" class="btn">تقييم جديد</button>
+      <button type="button" onclick="resetApp()" class="btn">تقييم جديد</button>
     </div>
   </div>
 
