@@ -7,6 +7,13 @@
 
 body {
   background-color: #121212;
+  /* إضافة اللوغو كخلفية مائية خفيفة وفخمة في منتصف الشاشة */
+  background-image: radial-gradient(circle, rgba(18, 18, 18, 0.82), #121212), 
+                    url('https://drive.usercontent.google.com/download?id=1vtd5gUi3b-Veh9fh6c3x1e_KmK89gJiN');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 380px;
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,11 +22,12 @@ body {
 }
 
 .card {
-  background: #1e1e1e;
+  background: rgba(30, 30, 30, 0.92); /* خلفية شبه شفافة لإبراز التدرج المائي خلف البطاقة */
+  backdrop-filter: blur(8px);
   border: 1px solid #333333;
   padding: 30px;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   width: 100%;
   max-width: 420px;
   text-align: center;
@@ -36,7 +44,7 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 #brand-logo {
