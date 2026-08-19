@@ -8,6 +8,8 @@ let customerData = {
   feedback: ''
 };
 
+let autoResetTimer = null;
+
 // عناصر الواجهة
 const step1 = document.getElementById('step-1');
 const step2 = document.getElementById('step-2');
@@ -18,7 +20,7 @@ const emojiOptions = document.querySelectorAll('.emoji-option');
 const submitBtn = document.getElementById('submit-btn');
 const backBtn = document.getElementById('back-btn');
 
-// --- 1. منع إغلاق شاشة التابلت تلقائياً (Screen Wake Lock) ---
+// --- 1. منع إغلاق الشاشة برمجياً (Screen Wake Lock) ---
 let wakeLock = null;
 
 async function requestWakeLock() {
@@ -31,14 +33,13 @@ async function requestWakeLock() {
   }
 }
 
-// إعادة القفل إذا تم التبديل ورجع العميل للتابلت
 document.addEventListener('visibilitychange', async () => {
   if (wakeLock !== null && document.visibilityState === 'visible') {
     await requestWakeLock();
   }
 });
 
-// تفعيل وضع الكشك والتطبيق الكامل عند أول لمسة
+// تفعيل وضع الكشك والشاشة الكاملة
 function initAppMode() {
   requestWakeLock();
   
@@ -55,10 +56,9 @@ function initAppMode() {
 window.addEventListener('click', initAppMode, { once: true });
 window.addEventListener('touchstart', initAppMode, { once: true });
 
-// --- 2. إدارة خطوات التقييم ---
+// --- 2. إدارة الخطوات والتنقل ---
 customerForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  
   initAppMode();
 
   customerData.customerId = document.getElementById('customerId').value.trim();
@@ -85,16 +85,14 @@ emojiOptions.forEach(option => {
   });
 });
 
-submitBtn.addEventListener('click', async () => {
+// --- 3. الإرسال الفوري والسريع جداً ---
+submitBtn.addEventListener('click', () => {
   if (customerData.rating === 0) {
     alert('يرجى اختيار مستوى التقييم قبل الإرسال.');
     return;
   }
 
   customerData.feedback = document.getElementById('feedback').value.trim();
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'جاري الإرسال...';
 
   const payload = {
     customerId: customerData.customerId,
@@ -103,23 +101,40 @@ submitBtn.addEventListener('click', async () => {
     feedback: customerData.feedback
   };
 
-  try {
-    await fetch(WEB_APP_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
-      },
-      body: JSON.stringify(payload)
-    });
+  // أ) الإرسال في الخلفية فوري بدون انتظار رد السيرفر
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8',
+    },
+    body: JSON.stringify(payload)
+  }).catch(err => console.error('Background send error:', err));
 
-    step2.classList.remove('active');
-    stepSuccess.classList.add('active');
+  // ب) الانتقال الفوري لشاشة النجاح
+  step2.classList.remove('active');
+  stepSuccess.classList.add('active');
 
-  } catch (error) {
-    console.error('Error:', error);
-    alert('حدث خطأ أثناء إرسال البيانات، يرجى المحاولة لاحقاً.');
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'إرسال التقييم';
-  }
+  // ج) إعاده تعيين التطبيق آلياً بعد 4 ثوانٍ
+  if (autoResetTimer) clearTimeout(autoResetTimer);
+  autoResetTimer = setTimeout(() => {
+    resetApp();
+  }, 4000);
 });
+
+// دالة العودة للشاشة الأولى لتهيئة التابلت للعميل التالي
+function resetApp() {
+  if (autoResetTimer) clearTimeout(autoResetTimer);
+  
+  customerData = { customerId: '', customerName: '', rating: 0, ratingText: '', feedback: '' };
+  customerForm.reset();
+  document.getElementById('feedback').value = '';
+  emojiOptions.forEach(opt => opt.classList.remove('selected'));
+  
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'إرسال التقييم';
+
+  stepSuccess.classList.remove('active');
+  step2.classList.remove('active');
+  step1.classList.add('active');
+}
