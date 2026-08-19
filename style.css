@@ -7,62 +7,43 @@
 
 body {
   background-color: #121212;
-  /* إضافة اللوغو كخلفية مائية خفيفة خلف البطاقة */
-  background-image: radial-gradient(circle, rgba(18, 18, 18, 0.85), #121212), 
-                    url('logo.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 380px;
-  
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   padding: 20px;
 }
 
-.card {
-  background: rgba(30, 30, 30, 0.92);
-  backdrop-filter: blur(8px);
-  border: 1px solid #333333;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  width: 100%;
-  max-width: 420px;
+/* تنسيق اللوغو في أعلى الشاشة */
+.header-logo-container {
+  margin-bottom: 25px;
   text-align: center;
 }
 
-/* حاوية اللوغو العلوي مع ضبط الأبعاد لإبراز الرسم كاملاً دون قص */
-.logo-container {
-  width: 110px;
-  height: 110px;
-  margin: 0 auto 20px auto;
-  border-radius: 50%;
-  background-color: #1f1f1f;
-  border: 3px solid #ffcc00;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  padding: 8px;
-}
-
-#brand-logo {
-  max-width: 100%;
-  max-height: 100%;
+#top-logo {
+  max-width: 140px;
+  height: auto;
   object-fit: contain;
-  display: block;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
 }
 
-.logo-placeholder {
+.logo-text-fallback {
   color: #ffcc00;
+  font-size: 24px;
   font-weight: bold;
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  letter-spacing: 1px;
+}
+
+.card {
+  background: #1e1e1e;
+  border: 1px solid #333333;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
 }
 
 .step {
