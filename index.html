@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>تقييم تجربة العميل - JJ's Supermarket</title>
+  <title>JJ's Supermarket - Rating & Loyalty</title>
   
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1a1a1a">
@@ -19,6 +19,11 @@
 <body>
 
   <div class="card">
+    <!-- زر تبديل اللغة أعلى البطاقة -->
+    <div class="lang-switch-container">
+      <button type="button" id="lang-btn" class="lang-btn">English</button>
+    </div>
+
     <!-- الشعار الرسمي -->
     <div class="brand-header">
       <img src="https://drive.usercontent.google.com/download?id=1vtd5gUi3b-Veh9fh6c3x1e_KmK89gJiN" alt="JJ's Supermarket Logo" id="brand-logo" onerror="this.onerror=null; this.src='logo.png';">
@@ -26,16 +31,17 @@
 
     <!-- الشاشة الأولى: بيانات العميل والفاتورة -->
     <div id="step-1" class="step active">
-      <h2>مرحباً بك!</h2>
-      <p>أدخل بيانات الفاتورة لتسجيل نقاط الولاء ومتابعة التقييم</p>
+      <h2 data-i18n="step1_title">مرحباً بك!</h2>
+      <p data-i18n="step1_subtitle">أدخل بيانات الفاتورة لتسجيل نقاط الولاء ومتابعة التقييم</p>
       
       <form id="customer-form">
         <div class="form-group">
-          <label for="customerId">رقم الهاتف:</label>
+          <label for="customerId" data-i18n="label_phone">رقم الهاتف:</label>
           <input 
             type="tel" 
             id="customerId" 
-            placeholder="أدخل رقم الهاتف" 
+            placeholder="079XXXXXXX" 
+            data-i18n-ph="ph_phone"
             inputmode="numeric" 
             pattern="[0-9]*" 
             autocomplete="off" 
@@ -43,11 +49,12 @@
         </div>
 
         <div class="form-group">
-          <label for="customerName">اسم العميل:</label>
+          <label for="customerName" data-i18n="label_name">اسم العميل:</label>
           <input 
             type="text" 
             id="customerName" 
             placeholder="أدخل اسمك الكريم" 
+            data-i18n-ph="ph_name"
             autocomplete="off" 
             autocorrect="off" 
             spellcheck="false" 
@@ -55,79 +62,80 @@
         </div>
 
         <div class="form-group">
-          <label for="invoiceNo">رقم الفاتورة:</label>
+          <label for="invoiceNo" data-i18n="label_invoice_no">رقم الفاتورة:</label>
           <input 
             type="text" 
             id="invoiceNo" 
             placeholder="رقم الفاتورة" 
+            data-i18n-ph="ph_invoice_no"
             inputmode="numeric" 
             autocomplete="off" 
             required>
         </div>
 
         <div class="form-group">
-          <label for="invoiceAmount">قيمة الفاتورة (بالدينار):</label>
+          <label for="invoiceAmount" data-i18n="label_invoice_amount">قيمة الفاتورة (بالدينار):</label>
           <input 
             type="number" 
             id="invoiceAmount" 
             placeholder="مثال: 15.50" 
+            data-i18n-ph="ph_invoice_amount"
             step="0.01" 
             min="0.1" 
             inputmode="decimal" 
             required>
         </div>
 
-        <button type="submit" class="btn btn-primary">التالي</button>
+        <button type="submit" class="btn btn-primary" data-i18n="btn_next">التالي</button>
       </form>
     </div>
 
     <!-- الشاشة الثانية: التقييم بالإيموجي -->
     <div id="step-2" class="step">
-      <h2>كيف كانت تجربتك اليوم؟</h2>
+      <h2 data-i18n="step2_title">كيف كانت تجربتك اليوم؟</h2>
       <p id="welcome-msg"></p>
 
       <div class="rating-emojis">
-        <div class="emoji-option" data-value="5" data-text="راضي جداً">
+        <div class="emoji-option" data-value="5" data-text-ar="راضي جداً" data-text-en="Very Satisfied">
           <span class="emoji-icon">🤩</span>
-          <span class="emoji-label">راضي جداً</span>
+          <span class="emoji-label" data-i18n="emoji_great">راضي جداً</span>
         </div>
-        <div class="emoji-option" data-value="3" data-text="راضي">
+        <div class="emoji-option" data-value="3" data-text-ar="راضي" data-text-en="Satisfied">
           <span class="emoji-icon">🙂</span>
-          <span class="emoji-label">راضي</span>
+          <span class="emoji-label" data-i18n="emoji_good">راضي</span>
         </div>
-        <div class="emoji-option" data-value="1" data-text="سيئ">
+        <div class="emoji-option" data-value="1" data-text-ar="سيئ" data-text-en="Bad">
           <span class="emoji-icon">🙁</span>
-          <span class="emoji-label">سيئ</span>
+          <span class="emoji-label" data-i18n="emoji_bad">سيئ</span>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="feedback">ملاحظاتك (اختياري):</label>
-        <textarea id="feedback" rows="3" placeholder="أخبرنا بالمزيد عن تجربتك..."></textarea>
+        <label for="feedback" data-i18n="label_feedback">ملاحظاتك (اختياري):</label>
+        <textarea id="feedback" rows="3" placeholder="أخبرنا بالمزيد عن تجربتك..." data-i18n-ph="ph_feedback"></textarea>
       </div>
 
       <div class="actions">
-        <button type="button" id="back-btn" class="btn btn-secondary">السابق</button>
-        <button type="button" id="submit-btn" class="btn btn-primary">إرسال التقييم</button>
+        <button type="button" id="back-btn" class="btn btn-secondary" data-i18n="btn_back">السابق</button>
+        <button type="button" id="submit-btn" class="btn btn-primary" data-i18n="btn_submit">إرسال التقييم</button>
       </div>
     </div>
 
-    <!-- شاشة النجاح وعرض النقاط المكتسبة -->
+    <!-- شاشة النجاح -->
     <div id="step-success" class="step">
       <div class="success-icon">✓</div>
-      <h2>شكراً لك!</h2>
-      <p>تم استلام تقييمك وتسجيل نقاط الفاتورة بنجاح.</p>
+      <h2 data-i18n="success_title">شكراً لك!</h2>
+      <p data-i18n="success_msg">تم استلام تقييمك وتسجيل نقاط الفاتورة بنجاح.</p>
 
-      <!-- شارة احتساب النقاط المباشرة -->
       <div class="loyalty-badge">
         <span class="badge-icon">🎉</span>
         <div class="badge-text">
-          <strong id="earned-points-display">+0 نقطة ولاء</strong>
-          <small id="invoice-summary-display">عن فاتورة بقيمة 0 دينار</small>
+          <strong id="earned-points-display">+0 نقاط ولاء</strong>
+          <small id="invoice-summary-display">عن الفاتورة</small>
         </div>
       </div>
 
-      <button type="button" onclick="resetApp()" class="btn btn-primary">تقييم جديد</button>
+      <button type="button" onclick="resetApp()" class="btn btn-primary" data-i18n="btn_new_rating">تقييم جديد</button>
     </div>
   </div>
 
