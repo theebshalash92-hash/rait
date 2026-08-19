@@ -115,7 +115,7 @@ submitBtn.addEventListener('click', () => {
   step2.classList.remove('active');
   stepSuccess.classList.add('active');
 
-  // ج) إعاده تعيين التطبيق آلياً بعد 4 ثوانٍ
+  // ج) إعادة تعيين التطبيق آلياً بعد 4 ثوانٍ
   if (autoResetTimer) clearTimeout(autoResetTimer);
   autoResetTimer = setTimeout(() => {
     resetApp();
